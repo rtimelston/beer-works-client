@@ -1,4 +1,4 @@
-package guru.springframework.beerworksclient.domain;
+package guru.springframework.beerworksclient.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,15 +1,14 @@
-package guru.springframework.beerworksclient.service;
+package guru.springframework.beerworksclient.client;
 
-import guru.springframework.beerworksclient.domain.Customer;
-import guru.springframework.beerworksclient.domain.CustomerOrder;
-import guru.springframework.beerworksclient.domain.Order;
+import guru.springframework.beerworksclient.model.*;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.UUID;
 
-public interface BeerWorksService {
+public interface OrderClient {
+
     ClientResponse createNewCustomer();
 
     Mono<Customer> getByCustomerId(UUID uuid);

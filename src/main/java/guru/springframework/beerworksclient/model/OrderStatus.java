@@ -1,4 +1,4 @@
-package guru.springframework.beerworksclient.domain;
+package guru.springframework.beerworksclient.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+@NoArgsConstructor
+public class OrderStatus {
     private UUID orderId;
-    private OrderStatus orderStatus;
+    private String customerRef;
+    private String orderStatus;
 }
