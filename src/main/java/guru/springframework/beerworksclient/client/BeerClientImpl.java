@@ -1,13 +1,22 @@
 package guru.springframework.beerworksclient.client;
 
+import guru.springframework.beerworksclient.config.WebClientProperties;
 import guru.springframework.beerworksclient.model.Beer;
 import guru.springframework.beerworksclient.model.BeerPagedList;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.ClientResponse;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
+@Service
 public class BeerClientImpl implements BeerClient {
+
+    private final WebClient webClient;
+
     @Override
     public Mono<Beer> getBeerById(UUID id, Boolean showInventoryOnHand) {
         return null;
