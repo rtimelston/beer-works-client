@@ -25,7 +25,10 @@ public class BeerClientImpl implements BeerClient {
     @Override
     public Mono<BeerPagedList> listBeers(Integer pageNumber, Integer pageSize, String beerName,
                                          String beerStyle, Boolean showInventoryOnHand) {
-        return null;
+        return webClient.get()
+                .uri(WebClientProperties.BASE_V1_PATH)
+                .retrieve()
+                .bodyToMono(BeerPagedList.class);
     }
 
     @Override
