@@ -10,7 +10,7 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BeerClientImplTest {
 
@@ -29,15 +29,23 @@ class BeerClientImplTest {
 
         Mono<Beer> beerMono = beerClient.getBeerById(id, false);
         Beer beer = beerMono.block();
-        assertThat(beer).isNotNull();
-        System.out.println(beer);
+        assertNotNull(beer);
+        assertEquals(id, beer.getId());
+        assertNotNull(beer.getQuantityOnHand());
+//        assertNull(beer.getQuantityOnHand()); // bug in beer service
     }
 
     @Test
-    void getBeerByIdThrowsErrorWithoutId() {
-        assertThrows(NullPointerException.class, () -> {
-            Mono<Beer> beerMono = beerClient.getBeerById(null, false);
-        });
+    void getBeerByIdReturnsInventory() {
+        Mono<BeerPagedList> beerPagedListMono = beerClient.listBeers(1, 10, null, null, null);
+        BeerPagedList pagedList = beerPagedListMono.block();
+        UUID id = pagedList.getContent().get(0).getId();
+
+        Mono<Beer> beerMono = beerClient.getBeerById(id, true);
+        Beer beer = beerMono.block();
+        assertThat(beer).isNotNull();
+        assertEquals(id, beer.getId());
+        assertThat(beer.getQuantityOnHand()).isNotNull();
     }
 
     @Test
@@ -88,13 +96,6 @@ class BeerClientImplTest {
         Mono<Beer> beerMono = beerClient.getBeerByUPC(upc);
         Beer beer = beerMono.block();
         assertThat(beer).isNotNull();
-        System.out.println(beer);
-    }
-
-    @Test
-    void getBeerByUPCThrowsErrorWithoutUPC() {
-        assertThrows(NullPointerException.class, () -> {
-            Mono<Beer> beerMono = beerClient.getBeerByUPC(null);
-        });
+        assertEquals(upc, beer.getUpc());
     }
 }
