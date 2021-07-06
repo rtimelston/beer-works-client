@@ -21,9 +21,9 @@ public class BeerClientImpl implements BeerClient {
     @Override
     public Mono<Beer> getBeerById(UUID id, Boolean showInventoryOnHand) {
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BASE_V1_PATH + "/" + id)
+                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BASE_V1_PATH_GET_BY_ID)
                         .queryParamIfPresent("showInventoryOnHand", Optional.ofNullable(showInventoryOnHand))
-                        .build()
+                        .build(id)
                 )
                 .retrieve()
                 .bodyToMono(Beer.class);
@@ -63,8 +63,8 @@ public class BeerClientImpl implements BeerClient {
     @Override
     public Mono<Beer> getBeerByUPC(String upc) {
         return webClient.get()
-                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BASE_V1_UPC_PATH + "/" + upc)
-                        .build()
+                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BASE_V1_UPC_PATH)
+                        .build(upc)
                 )
                 .retrieve()
                 .bodyToMono(Beer.class);
