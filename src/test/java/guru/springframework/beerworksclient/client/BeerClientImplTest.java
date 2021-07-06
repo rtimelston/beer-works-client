@@ -5,12 +5,15 @@ import guru.springframework.beerworksclient.model.Beer;
 import guru.springframework.beerworksclient.model.BeerPagedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class BeerClientImplTest {
 
@@ -77,6 +80,16 @@ class BeerClientImplTest {
 
     @Test
     void createBeer() {
+        Beer beer = Beer.builder()
+                .beerName("Dogfishhead 90 Min IPA")
+                .beerStyle("IPA")
+                .upc("92459274237434")
+                .price("10.99")
+                .build();
+
+        Mono<ResponseEntity<Void>> responseEntityMono = beerClient.createBeer(beer);
+        ResponseEntity responseEntity = responseEntityMono.block();
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.CREATED);
     }
 
     @Test

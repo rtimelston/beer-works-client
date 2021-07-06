@@ -1,6 +1,8 @@
 package guru.springframework.beerworksclient.client;
 
-import guru.springframework.beerworksclient.model.*;
+import guru.springframework.beerworksclient.model.Beer;
+import guru.springframework.beerworksclient.model.BeerPagedList;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import reactor.core.publisher.Mono;
 
@@ -12,7 +14,7 @@ public interface BeerClient {
     Mono<BeerPagedList> listBeers(Integer pageNumber, Integer pageSize, String beerName,
                                   String beerStyle, Boolean showInventoryOnHand);
 
-    Mono<ClientResponse> createBeer(Beer beer);
+    Mono<ResponseEntity<Void>> createBeer(Beer beer);
 
     Mono<ClientResponse> updateBeer(Beer beer);
 

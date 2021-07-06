@@ -4,7 +4,9 @@ import guru.springframework.beerworksclient.config.WebClientProperties;
 import guru.springframework.beerworksclient.model.Beer;
 import guru.springframework.beerworksclient.model.BeerPagedList;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -46,8 +48,12 @@ public class BeerClientImpl implements BeerClient {
     }
 
     @Override
-    public Mono<ClientResponse> createBeer(Beer beer) {
-        return null;
+    public Mono<ResponseEntity<Void>> createBeer(Beer beer) {
+        return webClient.post()
+                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BASE_V1_PATH).build())
+                .body(BodyInserters.fromValue(beer))
+                .retrieve()
+                .toBodilessEntity();
     }
 
     @Override
