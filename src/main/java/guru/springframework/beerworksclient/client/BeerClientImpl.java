@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -57,12 +56,17 @@ public class BeerClientImpl implements BeerClient {
     }
 
     @Override
-    public Mono<ClientResponse> updateBeer(Beer beer) {
-        return null;
+    public Mono<ResponseEntity<Void>> updateBeer(UUID id, Beer beer) {
+        return webClient.put()
+                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BASE_V1_PATH_GET_BY_ID)
+                .build(id))
+                .body(BodyInserters.fromValue(beer))
+                .retrieve()
+                .toBodilessEntity();
     }
 
     @Override
-    public Mono<ClientResponse> deleteBeerById(UUID id) {
+    public Mono<ResponseEntity<Void>> deleteBeerById(UUID id) {
         return null;
     }
 

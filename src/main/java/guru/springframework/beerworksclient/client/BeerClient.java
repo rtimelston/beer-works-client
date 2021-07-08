@@ -3,7 +3,6 @@ package guru.springframework.beerworksclient.client;
 import guru.springframework.beerworksclient.model.Beer;
 import guru.springframework.beerworksclient.model.BeerPagedList;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.reactive.function.client.ClientResponse;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -16,9 +15,9 @@ public interface BeerClient {
 
     Mono<ResponseEntity<Void>> createBeer(Beer beer);
 
-    Mono<ClientResponse> updateBeer(Beer beer);
+    Mono<ResponseEntity<Void>> updateBeer(UUID id, Beer beer);
 
-    Mono<ClientResponse> deleteBeerById(UUID id);
+    Mono<ResponseEntity<Void>> deleteBeerById(UUID id);
 
     Mono<Beer> getBeerByUPC(String upc);
 }
