@@ -67,7 +67,11 @@ public class BeerClientImpl implements BeerClient {
 
     @Override
     public Mono<ResponseEntity<Void>> deleteBeerById(UUID id) {
-        return null;
+        return webClient.delete()
+                .uri(uriBuilder -> uriBuilder.path(WebClientProperties.BASE_V1_PATH_GET_BY_ID)
+                .build(id))
+                .retrieve()
+                .toBodilessEntity();
     }
 
     @Override
