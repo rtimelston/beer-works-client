@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,6 +40,25 @@ class BeerClientImplTest {
         assertEquals(id, beer.getId());
         assertNotNull(beer.getQuantityOnHand());
 //        assertNull(beer.getQuantityOnHand()); // bug in beer service
+    }
+
+    @Test
+    void getBeerByIdFunctionalTest() throws InterruptedException {
+        AtomicReference<String> beerName = new AtomicReference<>();
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        beerClient.listBeers(1, 10, null, null, null)
+                .map(beerPagedList -> beerPagedList.getContent().get(0).getId())
+                .map(beerId -> beerClient.getBeerById(beerId, false))
+                .flatMap(mono -> mono)
+                .subscribe(beerDto -> {
+                    System.out.println(beerDto.getBeerName());
+                    beerName.set(beerDto.getBeerName());
+                    countDownLatch.countDown();
+                });
+
+        countDownLatch.await();
+        assertThat(beerName.get()).isNotNull();
     }
 
     @Test
